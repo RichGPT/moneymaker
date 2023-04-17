@@ -1,0 +1,49 @@
+import pygame
+
+# Initialize Pygame
+pygame.init()
+
+# Set up the window
+screen_width = 640
+screen_height = 480
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Money Maker")
+
+# Load the guy image
+guy_image = pygame.image.load("guy.png").convert_alpha()
+
+# Set up the font for the money display
+font = pygame.font.SysFont("Arial", 36)
+
+# Set up the initial money amount
+money = 0
+
+# Set up the button rectangle
+button_rect = pygame.Rect(240, 360, 160, 80)
+
+# Start the game loop
+running = True
+while running:
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            # If the user clicks the button, add $10 to the money amount
+            if button_rect.collidepoint(event.pos):
+                money += 10
+    
+    # Draw the screen
+    screen.fill((255, 255, 255))
+    screen.blit(guy_image, (screen_width/2 - guy_image.get_width()/2, 100))
+    pygame.draw.rect(screen, (0, 0, 0), button_rect)
+    button_text = font.render("Make Money", True, (255, 255, 255))
+    screen.blit(button_text, (280, 380))
+    money_text = font.render(f"Money: ${money}", True, (0, 0, 0))
+    screen.blit(money_text, (20, 20))
+    
+    # Update the display
+    pygame.display.flip()
+
+# Clean up Pygame
+pygame.quit()
